@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
@@ -6,7 +7,7 @@ const app = express();
 
 const compiler = webpack(webpackConfig);
 
-app.use(express.static(__dirname + '/www'));
+app.use(express.static(__dirname + '/public'));
 
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
@@ -17,6 +18,11 @@ app.use(webpackDevMiddleware(compiler, {
   },
   historyApiFallback: true,
 }));
+
+app.use('*', function(res, req){
+ res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+}
+);
 
 const server = app.listen(3000, function() {
   const host = server.address().address;

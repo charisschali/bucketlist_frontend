@@ -6,23 +6,30 @@ module.exports = {
     './main.js',
   ],
   output: {
-    path: path.join(__dirname, 'www'),
+    path: path.join(__dirname, 'public'),
+    publicPath: '/',
     filename: 'bundle.js',
   },
   module: {
-    rules: [
+    loaders: [
       {
-        test: /\.js$/,
+        test: /\.js?/,
+        loader: 'babel-loader',
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ],
       },
-    ],
+      {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader',
+        ]
+      }
+    ]
   },
   resolve: {
-    modules: [
-      path.join(__dirname, 'node_modules'),
-    ],
+    // modules: [
+    //   path.join(__dirname, 'node_modules'),
+    // ],
+    extensions: ['.js']
   },
 };
